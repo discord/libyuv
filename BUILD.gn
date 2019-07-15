@@ -50,11 +50,17 @@ group("libyuv") {
   all_dependent_configs = [ ":libyuv_config" ]
   deps = []
 
-  if (is_win && target_cpu == "x64") {
-    # Compile with clang in order to get inline assembly
-    public_deps = [
-      ":libyuv_internal(//build/toolchain/win:win_clang_x64)",
-    ]
+  if (is_win) {
+    if (target_cpu == "x64") {
+      # Compile with clang in order to get inline assembly
+      public_deps = [
+        ":libyuv_internal(//build/toolchain/win:win_clang_x64)",
+      ]
+    } else {
+      public_deps = [
+        ":libyuv_internal(//build/toolchain/win:win_clang_x86)",
+      ]
+    }
   } else {
     public_deps = [
       ":libyuv_internal",
